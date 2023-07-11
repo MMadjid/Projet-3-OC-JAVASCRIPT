@@ -1,18 +1,18 @@
 import { displayAlertBox } from './admin.js';
 
-// Function handling login event
-async function loginSubmit(event) {
-	// Prevent default form event on submit
+	// Fonction qui gère la connection
+	async function loginSubmit(event) {
+	// Empêcher l'événement de formulaire par défaut lors du lancement
 	event.preventDefault();
 
-	// Turn form data into an object
+	// Transformer les données du formulaire
 	const data = new FormData(event.target);
 	const user = {
 		email: data.get('email'),
 		password: data.get('password'),
 	};
 
-	// Post user object to api to check email and password compatibility
+	// Lien entre utilisateur et l'api pour vérifier la compatibilité des e-mails et des mots de passe
 	const responseLogin = await fetch('http://localhost:5678/api/users/login', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -20,9 +20,9 @@ async function loginSubmit(event) {
 	});
 	const userLogin = await responseLogin.json();
 
-	// If email and password are correct, store token on session storage and go to index. Else, show alert message
+	// Si mail et MDP sont correct, alors direction page principale (grace au token), sinon direction message d'alerte
 	if (responseLogin.status === 200) {
-		// boolean used for alert on index after succesful login
+		// boolean utilisé pour l'alerte sur l'index après une connexion réussie
 		window.sessionStorage.setItem('showAlertBox', true);
 
 		window.sessionStorage.setItem('token', userLogin.token);
@@ -32,6 +32,6 @@ async function loginSubmit(event) {
 	}
 }
 
-// Adding login function to the form submit
-const loginForm = document.querySelector('#login');
-loginForm.addEventListener('submit', loginSubmit);
+// Ajout de la fonction de connexion au formulaire de soumission
+const loginDeFormulaire = document.querySelector('#login');
+loginDeFormulaire.addEventListener('submit', loginSubmit);

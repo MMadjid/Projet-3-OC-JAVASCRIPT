@@ -1,42 +1,43 @@
-// Getting all elements affected by admin view
-const editBanner = document.querySelector('#edit-banner');
-const loginLink = document.querySelector('#login-link');
-const editButtons = document.querySelectorAll('.edit');
-const filters = document.querySelector('.filters');
+// Constantes utilisées
+const Banniere = document.querySelector('#edit-banner');
+const lienLogin = document.querySelector('#login-link');
+const boutonModifier = document.querySelectorAll('.edit');
+const filtres = document.querySelector('.filters');
 
-// Change admin elements if login token is in session storage
+// Passer par le Token et les éléments qu'il contient pour modifier les éléments "admin"
 if (window.sessionStorage.getItem('token')) {
-	// Display edit banner
-	editBanner.style.display = 'flex';
-	editBanner.removeAttribute('aria-hidden');
+	// Bannière d'édition
+	Banniere.style.display = 'flex';
+	Banniere.removeAttribute('aria-hidden');
 
-	// Change login to logout
-	loginLink.href = 'index.html';
-	loginLink.innerText = 'logout';
+	// Passe du "login" au "logout"
+	lienLogin.href = 'index.html';
+	lienLogin.innerText = 'logout';
 
-	// Logout removes token from session storage
-	loginLink.addEventListener('click', () => {
+	// Logout removes token from session storage ( la déco enlève les éléments du jeton "token",
+	// ils empêchent d'acceder à tout les éléments d'un profil connecté)
+	lienLogin.addEventListener('click', () => {
 		window.sessionStorage.removeItem('token');
 	});
 
-	// Hide filters
-	filters.style.display = 'none';
-	filters.setAttribute('aria-hidden', true);
+	// Hide Filters (cache les filtres)
+	filtres.style.display = 'none';
+	filtres.setAttribute('aria-hidden', true);
 
-	// Display edit buttons
-	for (let button of editButtons) {
+	// Display edit buttons (affiche les bouttons d'édition)
+	for (let button of boutonModifier) {
 		button.style.display = 'flex';
 		button.removeAttribute('aria-hidden');
 	}
 }
 
-// Show alert box after login
+// Show alert box after login (envoi un message quand quelqu'un se login)
 if (window.sessionStorage.getItem('showAlertBox')) {
 	displayAlertBox('success', 'Connexion réussie', 3000);
 	window.sessionStorage.removeItem('showAlertBox');
 }
 
-// Create an alert box
+// Creation fenetre d'alerte (alert box)
 function alertBox(type, message) {
 	const box = document.createElement('div');
 	box.className = 'alert-box';
@@ -64,18 +65,18 @@ function alertBox(type, message) {
 	return box;
 }
 
-// Display alert box
+// Afficher la boite d'alerte
 export function displayAlertBox(type, message, duration) {
 	// Return if there is already an alert-box on the screen
 	if (document.querySelector('.alert-box')) return;
 
-	const alert = alertBox(type, message);
-	document.querySelector('main').appendChild(alert);
+	const alerte = alertBox(type, message);
+	document.querySelector('main').appendChild(alerte);
 
 	if (duration) {
 		window.setTimeout(() => {
 			if (document.querySelector('main').lastChild.className !== 'alert-box') return;
-			alert.parentNode.removeChild(alert);
+			alerte.parentNode.removeChild(alerte);
 		}, duration);
 	}
 }

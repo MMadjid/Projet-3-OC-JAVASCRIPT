@@ -1,12 +1,12 @@
-// Fetching all works from API
+// Fetching all works from API (permet de récuperer les infos via le lien API. dans ce cas précis c'est "work")
 const responseWorks = await fetch('http://localhost:5678/api/works');
 const works = await responseWorks.json();
 
-// Fetching all categories from API
+// Fetching all categories from API (pareil mais pour l'onglet "catégorie")
 const responseCategories = await fetch('http://localhost:5678/api/categories');
 const categories = new Set(await responseCategories.json());
 
-// Function that creates gallery using an array of works
+// Function that creates gallery using an array of works (creation de la galerie via le tableau works)
 export function createGallery(works) {
 	const gallery = document.querySelector('.gallery');
 
@@ -28,16 +28,16 @@ export function createGallery(works) {
 
 createGallery(works);
 
-// Function that creates filters using an array of categories
+// Fonction qui crée des filtres via le tableau catégorie
 function createFilters(categories) {
 	const filters = document.querySelector('.filters');
 
-	// Create no-filter button
+	// Création bouton no-filter 
 	const buttonNoFilter = document.createElement('button');
 	buttonNoFilter.innerText = 'Tous';
 	buttonNoFilter.className = 'active';
 	filters.appendChild(buttonNoFilter);
-	// Add click event listener
+	// Ajout "click event listener"
 	buttonNoFilter.addEventListener('click', () => {
 		document.querySelector('.active').className = '';
 		buttonNoFilter.className = 'active';
@@ -46,20 +46,20 @@ function createFilters(categories) {
 		createGallery(works);
 	});
 
-	// Create filter buttons
+	// Creation bouton filtre
 	for (let category of categories) {
 		const button = document.createElement('button');
 		button.innerText = category.name;
 
-		// Add click event listener
+		// Ajout "click event listener"
 		button.addEventListener('click', () => {
 			document.querySelector('.active').className = '';
 			button.className = 'active';
 
-			// Filter works using category id
+			// Le Filtre fonctionne en utilisant l'identifiant catégorie
 			const worksFiltered = works.filter((work) => work.category.id === category.id);
 
-			// Clear gallery then recreate it using filtered works
+			// Effacer la galerie puis la recréer en fonction des filtres
 			document.querySelector('.gallery').innerHTML = '';
 			createGallery(worksFiltered);
 		});
